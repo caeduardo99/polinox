@@ -1,0 +1,76 @@
+
+{% extends "base.html" %} 
+{% block content %}
+{% load static %}
+<script>
+  jQuery(function ($){
+        $(document).ajaxSend(function(){
+          $("#bg-spinner").fadeIn(500);
+        });
+        $("#button-addon1").click(function(){
+          $.ajax({
+            type: 'GET',
+            success: function(data){
+              console.log("se carga")
+            }
+          }).done(function(){
+            setTimeout(function(){
+              $("#bg-spinner");
+            });
+          });
+        });
+      });
+</script>
+
+<body>
+  <div id="bg-spinner">
+    <div id="position-spinner">
+        <span id="spinner"></span>
+    </div>
+  </div>
+  <main class="container">
+    <div id="bg-spinner">
+      <div id="position-spinner">
+          <span id="spinner"></span>
+      </div>
+    </div>
+      <section class="col-md-4 offset-md-4 mt-5">
+        <form action="/signin/" method="POST" class="card card-body">
+          {% csrf_token %}
+            <div class="text-center">
+              <img src="{% static 'ishida_dashboard/images/login.jpg' %}" width="150" height="150" class="img-fluid" alt="...">
+            </div>
+            <div class="mb-3">
+                  <label for="username">Usuario:</label>
+            <input
+              type="text"
+              name="username"
+              id="username"
+              class="form-control"
+              placeholder="Write your username"/>
+            </div>
+            <div class="mb-3">
+              <label for="password">Password:</label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              class="form-control"
+              placeholder="Write your password" />
+            </div>
+            <button  id="button-addon1" type="submit" class="btn btn-danger">Aceptar</button>
+            <br>
+            {% if message is not None %}
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endif %}
+        </form>
+  
+      </section>
+  </main>
+</body>
+
+{% endblock %}
+

@@ -1,0 +1,1191 @@
+{% extends "base.html" %}{% block content %} 
+<script> 
+    $(document).ready(function () { 
+      $("#search").on("keyup", function () { 
+        var value = $(this).val().toLowerCase(); 
+        $("#vendedores div").filter(function () { 
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1) 
+        }); 
+      }); 
+      $("#searchGrupo1Clients").on("keyup", function () { 
+        var value = $(this).val().toLowerCase(); 
+        $("#grupo1clientes div").filter(function () { 
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1) 
+        }); 
+      }); 
+      $("#searchGrupo2Clients").on("keyup", function () { 
+        var value = $(this).val().toLowerCase(); 
+        $("#grupo2clientes div").filter(function () { 
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1) 
+        }); 
+      }); 
+      $("#searchGrupo3Clients").on("keyup", function () { 
+        var value = $(this).val().toLowerCase(); 
+        $("#grupo3clientes div").filter(function () { 
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1) 
+        }); 
+      }); 
+      $("#searchGrupo4Clients").on("keyup", function () { 
+        var value = $(this).val().toLowerCase(); 
+        $("#grupo4clientes div").filter(function () { 
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1) 
+        }); 
+      }); 
+      $("#searchGrupo1Vendedores").on("keyup", function () { 
+        var value = $(this).val().toLowerCase(); 
+        $("#grupo1Vendedores div").filter(function () { 
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1) 
+        }); 
+      }); 
+      $("#searchGrupo2Vendedores").on("keyup", function () { 
+        var value = $(this).val().toLowerCase(); 
+        $("#grupo2Vendedores div").filter(function () { 
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1) 
+        }); 
+      }); 
+      $("#searchGrupo3Vendedores").on("keyup", function () { 
+        var value = $(this).val().toLowerCase(); 
+        $("#grupo3Vendedores div").filter(function () { 
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1) 
+        }); 
+      }); 
+      $("#searchGrupo4Vendedores").on("keyup", function () { 
+        var value = $(this).val().toLowerCase(); 
+        $("#grupo4Vendedores div").filter(function () { 
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1) 
+        }); 
+      }); 
+      $("#searchGrupo5Vendedores").on("keyup", function () { 
+        var value = $(this).val().toLowerCase(); 
+        $("#grupo5Vendedores div").filter(function () { 
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1) 
+        }); 
+      }); 
+      $("#searchGrupo6Vendedores").on("keyup", function () { 
+        var value = $(this).val().toLowerCase(); 
+        $("#grupo6Vendedores div").filter(function () { 
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1) 
+        }); 
+      }); 
+      $("#searchLine").on("keyup", function () { 
+        var value = $(this).val().toLowerCase(); 
+        $("#line div").filter(function () { 
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1) 
+        }); 
+      }); 
+    }); 
+ 
+     
+      jQuery(function ($){ 
+        $(document).ajaxSend(function(){ 
+          $("#bg-spinner-modal").fadeIn(500); 
+        }); 
+        $("#button-addon1").click(function(){ 
+          $.ajax({ 
+            type: 'GET', 
+            success: function(data){ 
+              console.log("se carga") 
+            } 
+          }).done(function(){ 
+            setTimeout(function(){ 
+              $("#bg-spinner-modal"); 
+            }); 
+          }); 
+        }); 
+      }); 
+ 
+      jQuery(function ($){ 
+        $(document).ajaxSend(function(){ 
+          $("#bg-spinner").fadeIn(500); 
+        }); 
+        $("#report_total").click(function(){ 
+          $.ajax({ 
+            type: 'GET', 
+            success: function(data){ 
+              console.log("se carga") 
+            } 
+          }).done(function(){ 
+            setTimeout(function(){ 
+              $("#bg-spinner"); 
+            }); 
+          }); 
+        }); 
+      }); 
+ 
+ 
+</script> 
+<script> 
+     
+    document.addEventListener("DOMContentLoaded", () => { 
+// Escuchamos el click del botón 
+const $boton = document.querySelector("#btnCrearPdf"); 
+$boton.addEventListener("click", () => { 
+    const $elementoParaConvertir = document.getElementById('print') // <-- Aquí puedes elegir cualquier elemento del DOM 
+    Swal.fire({ 
+      icon: 'info', 
+      title: 'Ejecutando', 
+      text: 'Creando reporte...', 
+      showConfirmButton: false, 
+    }) 
+    html2pdf() 
+        .set({ 
+            margin: 1, 
+            filename: 'reportetotal.pdf', 
+            image: { 
+                type: 'jpeg', 
+                quality: 0.50 
+            }, 
+            html2canvas: { 
+                scale: 3, // A mayor escala, mejores gráficos, pero más peso 
+                letterRendering: true, 
+            }, 
+            jsPDF: { 
+                unit: "mm", 
+                format: [550, 500],  
+                orientation: 'portrait' // landscape o portrait 
+                 
+            } 
+        }) 
+         
+        .from($elementoParaConvertir) 
+        .save() 
+        .finally() 
+        .then(() =>{ 
+            Swal.close() 
+            Swal.fire({ 
+                icon: 'success', 
+                text: 'Reporte Generado!', 
+            }) 
+        }) 
+        .catch(err => console.log(err)); 
+}); 
+}); 
+</script> 
+<style> 
+    .not-active {  
+        pointer-events: none;  
+        cursor: default;  
+    }  
+ 
+    .ocultar_item { 
+        display: none; 
+    } 
+ 
+    .mostrar_item { 
+        display: block; 
+    } 
+ 
+    .ocultar_vendedores{ 
+        display: none; 
+    } 
+    .mostrar_vendedores{ 
+        display: block; 
+    } 
+ 
+    .ocultar_clientes{ 
+        display: none; 
+    } 
+    .mostrar_clientes{ 
+        display: block; 
+    } 
+ 
+    .ocultar_grupo1 { 
+        display: none; 
+    } 
+ 
+    .mostrar_grupo1 { 
+        display: block; 
+    } 
+ 
+    .ocultar_grupo2 { 
+        display: none; 
+    } 
+    .mostrar_grupo2 { 
+        display: block; 
+    } 
+ 
+    .ocultar_grupo3{ 
+        display: none; 
+    } 
+    .mostrar_grupo3{ 
+        display: block; 
+    } 
+ 
+    .ocultar_grupo4{ 
+        display: none; 
+    } 
+ 
+    .mostrar_grupo4{ 
+        display: block; 
+    } 
+ 
+    .ocultar_grupo5{ 
+        display: none; 
+    } 
+    .mostrar_grupo5{ 
+        display: block; 
+    } 
+ 
+    .ocultar_grupo6{ 
+        display: none; 
+    } 
+    .mostrar_grupo6{ 
+        display: block; 
+    } 
+ 
+    .ocultar_grupo1_client{ 
+        display: none; 
+    } 
+    .mostrar_grupo1_client{ 
+        display: block; 
+    } 
+ 
+    .ocultar_grupo2_client{ 
+        display: none; 
+    } 
+    .mostrar_grupo2_client{ 
+        display: block; 
+    } 
+ 
+    .ocultar_grupo3_client{ 
+        display: none; 
+    } 
+    .mostrar_grupo3_client{ 
+        display: block; 
+    } 
+ 
+    .ocultar_grupo4_client{ 
+        display: none; 
+    } 
+    .mostrar_grupo4_client{ 
+        display: block; 
+    } 
+ 
+    div.checklist { 
+        height: 200px; 
+        width: 100%; 
+        overflow: hidden; 
+        overflow-y: scroll; 
+    } 
+    input[type=checkbox] + label  
+    { color: black; }  
+    input[type=checkbox]:checked + label  
+    { background: #2A80F2; color: white; } 
+ 
+    input[type='checkbox']:hover + label{ 
+        background-color:#2A80F2 ; 
+        color: white; 
+    } 
+ 
+
+    .footer{
+        background: rgb(13, 13, 13);
+        height: auto;
+        width: 100%;
+        padding-top: 40px;
+        color: #fff;
+    }
+
+    #content{
+        text-align: center;
+    }
+
+    div.page1, div.page2, div.page3{ 
+        page-break-after: always; 
+        page-break-inside: avoid; 
+    }     
+
+</style> 
+ 
+<div class="container-fluid" style="padding-left: 15px; padding-right: 15px;"> 
+    <div class="row"> 
+        <div id="bg-spinner"> 
+        <div id="position-spinner"> 
+            <span id="spinner"></span> 
+        </div> 
+    </div> 
+      <!-- Dashboad title --> 
+      <main class="ms-sm-auto" id="gg"> 
+        <div class="flex-md-nowrap pb-2 mb-5 border-bottom"> 
+          <br> 
+          <br>
+          <div class="d-sm-flex justify-content-between mb-4"> 
+            <h1 class="h3 mb-0 text-gray-800">DASHBOARD</h1>
+			<br>
+			<div class="row">
+            <div class="col-sm"> 
+                <button class=" btn btn-danger" id="btnCrearPdf">Generar PDF</button> 
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"> 
+                    Filtrar 
+                  </button> 
+                  <a class="btn btn-dark" href="/dashboard/" type="submit" id="report_total"> 
+                    Reporte Total 
+                  </a> 
+            </div>
+			</div>			
+          </div> 
+          <br> 
+          <div id="print" style="margin-left: 20px; margin-right: 20px;"> 
+		  <div class="page1">
+		  <br>
+		  <br>
+              <h3><b>Empresa:</b> {{modelempresa.nombreempresa}}</h3>
+              <hr> 
+            <h3>Utilidad, Precio y Costo Total</h3> 
+            <div class="row"> 
+                <div class="col-12"> 
+                    {% autoescape off %}  
+                    {{ plot_div }}  
+                    {% endautoescape %}  
+                </div> 
+              </div> 
+              ​ <hr>  
+                  <div class="row">  
+                    <div class="col-12">  
+                        <h3>Proveedores</h3>  
+                        {% autoescape off %}  
+                        {{ donut }}  
+                        {% endautoescape %}  
+                    </div>  
+                  </div>  
+                  <div class="row">  
+                    <div class="col-sm"> 
+                        <br> 
+                        <div class="table-responsive"> 
+                            <h5>{{ modelGnopcionPc1.etiquetapcgrupo1 }}</h3>  
+                                <table id="example" class="table table-striped" style="width:100%">  
+                                    <thead class="table-dark">  
+                                  <tr>  
+                                    <th scope="col">Nombre Cliente</th>  
+                                    <th scope="col">Precio Total</th>  
+                                    <th scope="col">Costo Total</th>  
+                                    <th scope="col">Utilidad</th>  
+                                </tr>  
+                            </thead>  
+                            <tbody>  
+                                {% for list in df_list_table_client1 %}  
+                                <tr>  
+                                    <td>{{list.Cliente1}}</td>  
+                                    <td>${{list.Precio}}</td>  
+                                    <td>${{list.Costo}}</td>  
+                                    <td>${{list.Utilidad}}</td>  
+                                </tr>  
+                                {% endfor %}  
+                            </tbody> 
+                         
+                        </table>  
+                        </div>  
+                    </div>  
+                    <div class="col-sm">  
+                        <br> 
+                        <div class="table-responsive"> 
+                            <h5>{{ modelGnopcionPc2.etiquetapcgrupo2 }}</h3>  
+                            <table id="example1" class="table table-striped" style="width:100%">  
+                                <thead class="table-dark">  
+                              <tr>  
+                                <th scope="col">Nombre Cliente</th>  
+                                <th scope="col">Precio Total</th> 
+                                <th scope="col">Costo Total</th>  
+                                <th scope="col">Utilidad</th>  
+                            </tr>  
+                            </thead>  
+                        <tbody>  
+                            {% for list in df_list_table_client2 %}  
+                            <tr>  
+                                <td>{{list.Cliente2}}</td>  
+                                <td>${{list.Precio}}</td>  
+                                <td>${{list.Costo}}</td>  
+                                <td>${{list.Utilidad}}</td>  
+                            </tr>  
+                            {% endfor %}  
+                        </tbody>  
+                    </table>  
+                        </div> 
+                    </div>  
+                  </div>  
+				  <div class="page2">
+                  <div class="row">  
+                            <div class="col-sm"> 
+                                <br> 
+                                <div class="table-responsive"> 
+                                    <h5>{{ modelGnopcionPc3.etiquetapcgrupo3 }}</h3>  
+                                        <table id="example2" class="table table-striped" style="width:100%">  
+                                            <thead class="table-dark">  
+                                          <tr>  
+                                            <th scope="col">Nombre Cliente</th>  
+                                            <th scope="col">Precio Total</th> 
+                                            <th scope="col">Costo Total</th>  
+                                            <th scope="col">Utilidad</th> 
+                                        </tr>  
+                                    </thead>  
+                                    <tbody>  
+                                        {% for list in df_list_table_client3 %}  
+                                        <tr>  
+                                            <td>{{list.Cliente3}}</td>  
+                                            <td>${{list.Precio}}</td>  
+                                            <td>${{list.Costo}}</td>  
+                                            <td>${{list.Utilidad}}</td>  
+                                        </tr>  
+                                        {% endfor %}  
+                                    </tbody>  
+                                </table> 
+                                </div> 
+                        </div>  
+                        <div class="col-sm"> 
+                            <br> 
+                            <div class="table-responsive"> 
+                            <h5>{{ modelGnopcionPc4.etiquetapcgrupo4 }}</h3>  
+                            <table id="example3" class="table table-striped" style="width:100%">  
+                                <thead class="table-dark">  
+                                  <tr>  
+                                    <th scope="col">Nombre Cliente</th>  
+                                    <th scope="col">Precio Total</th>  
+                                    <th scope="col">Costo Total</th>  
+                                    <th scope="col">Utilidad</th> 
+                                  </tr>  
+                                </thead>  
+                                <tbody>  
+                                    {% for list in df_list_table_client4 %}  
+                                  <tr>  
+                                    <td>{{list.Cliente4}}</td>  
+                                    <td>${{list.Precio}}</td>  
+                                    <td>${{list.Costo}}</td>  
+                                    <td>${{list.Utilidad}}</td>  
+                                </tr>  
+                                {% endfor %}  
+                                </tbody>  
+                              </table>  
+                            </div>  
+                    </div>  
+                  </div>  
+				  <hr> 
+               
+                  <div class="row">  
+                    <div class="col-12"> 
+                        <h3>Lineas</h3>  
+                        {% autoescape off %}  
+                        {{ provee }}  
+                        {% endautoescape %}  
+                    </div> 
+                  </div>  
+                  <div class="row">  
+                    <div class="col-sm">  
+                        <br> 
+                        <div class="table-responsive"> 
+                        <h5>{{modelGnopcionG1.etiquetagrupo1}}</h3>  
+                            <table id="example4" class="table table-striped table-bordered" style="width:100%" >  
+                                <thead class="table-dark">  
+                                  <tr>  
+                                    <th scope="col">Nombre de la Linea</th>  
+                                    <th scope="col">Precio Total</th>  
+                                    <th scope="col">Costo Total</th>  
+                                    <th scope="col">Utilidad</th> 
+                                  </tr>  
+                                </thead>  
+                                <tbody>  
+                                    {% for list in df_list_table_line1 %}  
+                                  <tr>  
+                                    <td>{{list.Linea1}}</td>  
+                                    <td>${{list.Precio}}</td>  
+                                    <td>${{list.Costo}}</td>  
+                                    <td>${{list.Utilidad}}</td>  
+                                </tr>  
+                                {% endfor %}  
+                                </tbody>  
+                              </table>  
+                            </div> 
+                    </div>  
+                    <div class="col-sm">  
+                        <br> 
+                        <div class="table-responsive"> 
+                        <h5>{{modelGnopcionG2.etiquetagrupo2}}</h3>  
+                            <table id="example5" class="table table-striped table-bordered" style="width:100%" >  
+                                <thead class="table-dark">  
+                                  <tr>  
+                                    <th scope="col">Nombre de la Linea</th>  
+                                    <th scope="col">Precio Total</th>  
+                                    <th scope="col">Costo Total</th>  
+                                    <th scope="col">Utilidad</th>  
+                                  </tr>  
+                                </thead>  
+                                <tbody>  
+                                    {% for list in df_list_table_line2 %}  
+                                  <tr>  
+                                    <td>{{list.Linea2}}</td>  
+                                    <td>${{list.Precio}}</td>  
+                                    <td>${{list.Costo}}</td>  
+                                    <td>${{list.Utilidad}}</td>  
+                                </tr>  
+                                {% endfor %}  
+                                </tbody>  
+                            </table> 
+                        </div> 
+                    </div>  
+                  </div>  
+				  </div>
+				  <div class="page3">
+				  <div class="row">  
+                    <div class="col-sm">  
+                        <br> 
+                        <div class="table-responsive"> 
+                        <h5>{{modelGnopcionG3.etiquetagrupo3}}</h3>  
+                            <table id="example6" class="table table-striped" style="width:100%">  
+                                <thead class="table-dark">  
+                                  <tr>  
+                                    <th scope="col">Nombre de la Linea</th>  
+                                    <th scope="col">Precio Total</th> 
+                                    <th scope="col">Costo Total</th>  
+                                    <th scope="col">Utilidad</th> 
+                                  </tr>  
+                                </thead>  
+                                <tbody>  
+                                    {% for list in df_list_table_line3 %}  
+                                  <tr>  
+                                    <td>{{list.Linea3}}</td>  
+                                    <td>${{list.Precio}}</td>  
+                                    <td>${{list.Costo}}</td>  
+                                    <td>${{list.Utilidad}}</td>  
+                                </tr>  
+                                {% endfor %}  
+                                </tbody>  
+                            </table> 
+                        </div> 
+                    </div>  
+                    <div class="col-sm">  
+                        <br> 
+                        <div class="table-responsive"> 
+                        <h5>{{modelGnopcionG4.etiquetagrupo4}}</h3>  
+                            <table id="example7" class="table table-striped" style="width:100%">  
+                                <thead class="table-dark">  
+                                  <tr>  
+                                    <th scope="col">Nombre de la Linea</th>  
+                                    <th scope="col">Precio Total</th> 
+                                    <th scope="col">Costo Total</th>  
+                                    <th scope="col">Utilidad</th> 
+                                  </tr>  
+                                </thead>  
+                                <tbody>  
+                                    {% for list in df_list_table_line4 %}  
+                                  <tr>  
+                                    <td>{{list.Linea4}}</td>  
+                                    <td>${{list.Precio}}</td>  
+                                    <td>${{list.Costo}}</td>  
+                                    <td>${{list.Utilidad}}</td>  
+                                </tr>  
+                                {% endfor %}  
+                                </tbody>  
+                            </table>  
+                        </div> 
+                    </div>  
+                  </div>  
+                  <div class="row">  
+                    <div class="col-sm"> 
+                        <br> 
+                        <div class="table-responsive"> 
+                        <h5>{{modelGnopcionG5.etiquetagrupo5}}</h3>  
+                            <table id="example8" class="table table-striped" style="width:100%">  
+                                <thead class="table-dark">  
+                                  <tr>  
+                                    <th scope="col">Nombre de la Linea</th>  
+                                    <th scope="col">Precio Total</th>  
+                                    <th scope="col">Costo Total</th>  
+                                    <th scope="col">Utilidad</th> 
+                                  </tr>  
+                                </thead>  
+                                <tbody>  
+                                    {% for list in df_list_table_line5 %}  
+                                  <tr>  
+                                    <td>{{list.Linea5}}</td>  
+                                    <td>${{list.Precio}}</td>  
+                                    <td>${{list.Costo}}</td>  
+                                    <td>${{list.Utilidad}}</td>  
+                                </tr>  
+                                {% endfor %}  
+                                </tbody>  
+                            </table>  
+                        </div> 
+                    </div>  
+                    <br> 
+                    <div class="col-sm">
+						<br>
+                        <div class="table-responsive"> 
+                        <h5>{{modelGnopcionG6.etiquetagrupo6}}</h3>  
+                            <table id="example9" class="table table-striped" style="width:100%">  
+                                <thead class="table-dark">  
+                                  <tr>  
+                                    <th scope="col">Nombre de la Linea</th>  
+                                    <th scope="col">Precio Total</th>  
+                                    <th scope="col">Costo Total</th>  
+                                    <th scope="col">Utilidad</th>  
+                                  </tr>  
+                                </thead>  
+                                <tbody>  
+                                    {% for list in df_list_table_line6 %}  
+                                  <tr>  
+                                    <td>{{list.Linea6}}</td>  
+                                    <td>${{list.Precio}}</td>  
+                                    <td>${{list.Costo}}</td>  
+                                    <td>${{list.Utilidad}}</td>  
+                                </tr>  
+                                {% endfor %}  
+                                </tbody>  
+                            </table> 
+                        </div>  
+                    </div>  
+                  </div>  
+          ​ <hr>
+          <div class="row">
+            <div class="col-12">
+                <h3>Linea de Tiempo</h3> 
+                {% autoescape off %} 
+                {{ time_line }} 
+                {% endautoescape %} 
+            </div>
+          </div> 
+		  </div>
+        </div>
+		</div>		
+    </div> 
+</main> 
+<div class="footer">
+    <div class="row">
+        <div class="col-12" id="content">
+            <h4>Dashboard Report</h4>
+            <p>Sistema de Generacion de Reportes</p>
+            <p><i>© 2023 Ishida - Todos los Derechos Reservados.</i></p>
+        </div>
+    </div>
+</div>
+</div> 
+</div> 
+ 
+<!-- Modal --> 
+<div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+    aria-labelledby="exampleModalLabel" aria-hidden="true" > 
+    <div id="bg-spinner-modal"> 
+        <div id="position-spinner"> 
+            <span id="spinner"></span> 
+        </div> 
+    </div> 
+    <div class="modal-dialog modal-lg"> 
+        <div class="modal-content"> 
+            <div class="modal-header"> 
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Personalizar la busqueda</h1> 
+            </div> 
+            <div class="modal-body"> 
+                <form method="GET"> 
+                    <!-- Row fecha --> 
+                    <div class="row"> 
+                        <div class="col-6"> 
+                            <label for="date" class="col col-form-label text-center">Desde:</label> 
+                            <br>
+                            <label style="color: rgba(0, 0, 0, 0.364);">MM/DD/AAAA</label>
+                            <div class="col-11 text-center"> 
+                              <div class="input-group date" id="datepicker"> 
+                                <input type="text" class="form-control" name="since" value="{{date_first_day.date}}"> 
+                                <span class="input-group-append"> 
+                                  <span class="input-group-text bg-white d-block"> 
+                                    <i class="fa fa-calendar"></i> 
+                                  </span> 
+                                </span> 
+                              </div> 
+                            </div> 
+                            <br> 
+                          </div> 
+                          <div class="col-6"> 
+                            <label for="date" class="col col-form-label text-center">Hasta:</label> 
+                            <br>
+                            <label style="color: rgba(0, 0, 0, 0.364);">MM/DD/AAAA</label>
+                            <div class="col-11 text-center"> 
+                              <div class="input-group date" id="datepicker1"> 
+                                <input type="text" class="form-control" name="to" value="{{date_actually.date}}"> 
+                                <span class="input-group-append"> 
+                                  <span class="input-group-text bg-white d-block"> 
+                                    <i class="fa fa-calendar"></i> 
+                                  </span> 
+                                </span> 
+                              </div> 
+                            </div> 
+                          </div> 
+                        <div class="modal-body"> 
+                            <br> 
+                            <!-- Botones para listar --> 
+                            <div class="row"> 
+                                <div class="col-11"> 
+                                    <a class="btn btn-primary ven_btn" id="ven_btn" role="button">Listar Vendedores</a> 
+                                    <a class="btn btn-primary item_btn" id="item_btn" role="button">Listar Lineas</a> 
+                                    <a class="btn btn-primary client_btn" id="client_btn" role="button">Listar Clientes</a> 
+                                </div> 
+                            </div> 
+                        </div> 
+                    </div> 
+                    <!-- Botones para ocultar --> 
+                    <div class="row"> 
+                        <div class="col-11"> 
+                            <div class="ocultar_clientes" id="ocultar_clientes"> 
+                                <a class="btn btn-danger" id="grupo1client" role="button">{{ modelGnopcionPc1.etiquetapcgrupo1 }}</a> 
+                                <a class="btn btn-danger" id="grupo2client" role="button">{{ modelGnopcionPc2.etiquetapcgrupo2 }}</a> 
+                                <a class="btn btn-danger" id="grupo3client" role="button">{{ modelGnopcionPc3.etiquetapcgrupo3 }}</a> 
+                                <a class="btn btn-danger" id="grupo4client" role="button">{{ modelGnopcionPc4.etiquetapcgrupo4 }}</a> 
+                            </div> 
+                        </div> 
+                    </div> 
+                    <!-- LISTA DE LOS GRUPOS DE CLIENTES --> 
+                    <div class="row"> 
+                        <div class="col-11"> 
+                            <div class="ocultar_grupo1_client" id="ocultar_grupo1_client"> 
+							<br>
+                                <h5>{{ modelGnopcionPc1.etiquetapcgrupo1 }}</h5> 
+                                <div class="input-group input-group-sm mb3 mt-a"> 
+                                    <input type="text" class="form-control" id="searchGrupo1Clients" placeholder="Buscar Filtro"> 
+                                </div> 
+                                <br> 
+                                <div class="checklist" id="grupo1clientes"> 
+                                    {% for clientGrup1 in contadorCliente1 %} 
+                                    <div class="form-check"> 
+                                        <input class="form-check-input" type="checkbox" name="clientGrup1" 
+                                            value="{{clientGrup1.descripciong1cliente}}"> 
+                                        <label class="form-check-label" for="flexCheckDefault">{{ clientGrup1.descripciong1cliente }} [{{ clientGrup1.Size }}]</label> 
+                                    </div> 
+                                    {% endfor %} 
+                                </div> 
+                            </div> 
+                        </div> 
+                    </div> 
+                    <div class="row"> 
+                        <div class="col-11"> 
+                            <div class="ocultar_grupo2_client" id="ocultar_grupo2_client"> 
+							<br> 
+                                <h5>{{ modelGnopcionPc2.etiquetapcgrupo2 }}</h5>  
+                                <div class="input-group input-group-sm mb3 mt-a"> 
+                                    <input type="text" class="form-control" id="searchGrupo2Clients" placeholder="Buscar Filtro"> 
+                                </div> 
+                                <br> 
+                                <div class="checklist" id="grupo2clientes"> 
+                                    {% for clientgrup2 in contadorCliente2 %} 
+                                    <div class="form-check"> 
+                                        <input class="form-check-input" type="checkbox" name="clientgrup2" 
+                                            value="{{clientgrup2.descripciong2cliente}}"> 
+                                        <label class="form-check-label" for="flexCheckDefault">{{ clientgrup2.descripciong2cliente }}  [{{clientgrup2.Size}}]</label> 
+                                    </div> 
+                                    {% endfor %} 
+                                </div> 
+                            </div> 
+                        </div> 
+                    </div> 
+                    <div class="row"> 
+                        <div class="col-11"> 
+                            <div class="ocultar_grupo3_client" id="ocultar_grupo3_client"> 
+							<br> 
+                                <h5>{{ modelGnopcionPc3.etiquetapcgrupo3 }}</h5> 
+                                <div class="input-group input-group-sm mb3 mt-a"> 
+                                    <input type="text" class="form-control" id="searchGrupo3Clients" placeholder="Buscar Filtro"> 
+                                </div> 
+                                <br> 
+                                <div class="checklist" id="grupo3clientes"> 
+                                    {% for clientGrup3 in contadorCliente3 %} 
+                                    <div class="form-check"> 
+                                        <input class="form-check-input" type="checkbox" name="clientGrup3" 
+                                            value="{{clientGrup3.descripciong3cliente}}"> 
+                                        <label class="form-check-label" for="flexCheckDefault">{{ clientGrup3.descripciong3cliente }}  [{{clientGrup3.Size}}]</label> 
+                                    </div> 
+                                    {% endfor %} 
+                                </div> 
+                            </div> 
+                        </div> 
+                    </div> 
+                    <div class="row"> 
+                        <div class="col-11"> 
+                            <div class="ocultar_grupo4_client" id="ocultar_grupo4_client"> 
+							<br> 
+                                <h5>{{ modelGnopcionPc4.etiquetapcgrupo4 }}</h5> 
+                                <div class="input-group input-group-sm mb3 mt-a"> 
+                                    <input type="text" class="form-control" id="searchGrupo4Clients" placeholder="Buscar Filtro"> 
+                                </div> 
+                                <br> 
+                                <div class="checklist" id="grupo4clientes"> 
+                                    {% for clientGrup4 in contadorCliente4 %} 
+                                    <div class="form-check"> 
+                                        <input class="form-check-input" type="checkbox" name="clientGrup4" 
+                                            value="{{clientGrup4.descripciong4cliente}}"> 
+                                        <label class="form-check-label" for="flexCheckDefault">{{ clientGrup4.descripciong4cliente }}  [{{clientGrup4.Size}}]</label> 
+                                    </div> 
+                                    {% endfor %} 
+                                </div> 
+                            </div> 
+                        </div> 
+                    </div> 
+                    <!-- LISTA DE VENDEDORES --> 
+                    <div class="row"> 
+                        <div class="col-11"> 
+                            <div class="ocultar_vendedores" id="ocultar_vendedores"> 
+                                <h5>Vendedores</h5> 
+                                <div class="input-group input-group-sm mb3 mt-a"> 
+                                    <input type="text" class="form-control" id="search" placeholder="Buscar Filtro"> 
+                                </div> 
+                                <br> 
+                                <div class="checklist" id="vendedores"> 
+                                    {% for vend in contadorVendedor %} 
+                                    <div class="form-check"> 
+                                        <input class="form-check-input" type="checkbox" name="vendedor" 
+                                            value="{{vend.nombrevendedor}}"> 
+                                        <label class="form-check-label" for="flexCheckDefault">{{ vend.nombrevendedor }}  [{{ vend.Size }}]</label> 
+                                    </div> 
+                                    {% endfor %} 
+                                </div> 
+                            </div> 
+                        </div> 
+                    </div> 
+                    <div class="row"> 
+                        <div class="col-11"> 
+                            <div class="ocultar_item" id="ocultar_item"> 
+                                <a class="btn btn-warning" id="grupo1" role="button">{{modelGnopcionG1.etiquetagrupo1}}</a> 
+                                <a class="btn btn-warning" id="grupo2" role="button">{{modelGnopcionG2.etiquetagrupo2}}</a> 
+                                <a class="btn btn-warning" id="grupo3" role="button">{{modelGnopcionG3.etiquetagrupo3}}</a> 
+                                <a class="btn btn-warning" id="grupo4" role="button">{{modelGnopcionG4.etiquetagrupo4}}</a> 
+                                <a class="btn btn-warning" id="grupo5" role="button">{{modelGnopcionG5.etiquetagrupo5}}</a> 
+                                <a class="btn btn-warning" id="grupo6" role="button">{{modelGnopcionG6.etiquetagrupo6}}</a> 
+                            </div> 
+                        </div> 
+                    </div> 
+                    <!-- LISTA DE LOS GRUPOS DE Lineas --> 
+                    <div class="row"> 
+                        <div class="col-11"> 
+                            <div class="ocultar_grupo1" id="ocultar_grupo1"> 
+                                <br> 
+                                <h5>{{modelGnopcionG1.etiquetagrupo1}}</h5> 
+                                <div class="input-group input-group-sm mb3 mt-a"> 
+                                    <input type="text" class="form-control" id="searchGrupo1Vendedores" placeholder="Buscar Filtro"> 
+                                </div> 
+                                <br> 
+                                <div class="checklist" id="grupo1Vendedores"> 
+                                    {% for grupo1 in contadorLinea1 %} 
+                                    <div class="form-check"> 
+                                        <input class="form-check-input" type="checkbox" name="lineG1" 
+                                            value="{{grupo1.descripciongrupo1lineas}}"> 
+                                        <label class="form-check-label" for="flexCheckDefault">{{ grupo1.descripciongrupo1lineas }}  [{{ grupo1.Size }}]</label> 
+                                    </div> 
+                                    {% endfor %} 
+                                </div> 
+                            </div> 
+                        </div> 
+                    </div> 
+                    <div class="row"> 
+                        <div class="col-11"> 
+                            <div class="ocultar_grupo2" id="ocultar_grupo2"> 
+                                <h5>Grupo 2</h5> 
+                                <div class="input-group input-group-sm mb3 mt-a"> 
+                                    <input type="text" class="form-control" id="searchGrupo2Vendedores" placeholder="Buscar Filtro"> 
+                                </div> 
+                                <br> 
+                                <div class="checklist" id="grupo2Vendedores"> 
+                                    {% for grupo2 in contadorLinea2 %} 
+                                    <div class="form-check"> 
+                                        <input class="form-check-input" type="checkbox" name="lineG2" 
+                                            value="{{grupo2.descripciongrupo2lineas}}"> 
+                                        <label class="form-check-label" for="flexCheckDefault">{{ grupo2.descripciongrupo2lineas }}   [{{grupo2.Size}}]</label> 
+                                    </div> 
+                                    {% endfor %} 
+                                </div> 
+                            </div> 
+                        </div> 
+                    </div> 
+                    <div class="row"> 
+                        <div class="col-11"> 
+                            <div class="ocultar_grupo3" id="ocultar_grupo3"> 
+                                <h5>Grupo 3</h5> 
+                                <div class="input-group input-group-sm mb3 mt-a"> 
+                                    <input type="text" class="form-control" id="searchGrupo3Vendedores" placeholder="Buscar Filtro"> 
+                                </div> 
+                                <br> 
+                                <div class="checklist" id="grupo3Vendedores"> 
+                                    {% for grupo3 in contadorLinea3 %} 
+                                    <div class="form-check"> 
+                                        <input class="form-check-input" type="checkbox" name="lineG3" 
+                                            value="{{grupo3.descripciongrupo3lineas}}"> 
+                                        <label class="form-check-label" for="flexCheckDefault">{{ grupo3.descripciongrupo3lineas }}   [{{ grupo3.Size }}]</label> 
+                                    </div> 
+                                    {% endfor %} 
+                                </div> 
+                            </div> 
+                        </div> 
+                    </div> 
+                    <div class="row"> 
+                        <div class="col-11"> 
+                            <div class="ocultar_grupo4" id="ocultar_grupo4"> 
+                                <h5>Grupo 4</h5> 
+                                <div class="input-group input-group-sm mb3 mt-a"> 
+                                    <input type="text" class="form-control" id="searchGrupo4Vendedores" placeholder="Buscar Filtro"> 
+                                </div> 
+                                <br> 
+                                <div class="checklist" id="grupo4Vendedores"> 
+                                    {% for grupo4 in contadorLinea4 %} 
+                                    <div class="form-check"> 
+                                        <input class="form-check-input" type="checkbox" name="lineG4" 
+                                            value="{{grupo4.descripciongrupo4lineas}}"> 
+                                        <label class="form-check-label" for="flexCheckDefault">{{ grupo4.descripciongrupo4lineas }} [{{ grupo4.Size }}]</label> 
+                                    </div> 
+                                    {% endfor %} 
+                                </div> 
+                            </div> 
+                        </div> 
+                    </div> 
+                    <div class="row"> 
+                        <div class="col-11"> 
+                            <div class="ocultar_grupo5" id="ocultar_grupo5"> 
+                                <h5>Grupo 5</h5> 
+                                <div class="input-group input-group-sm mb3 mt-a"> 
+                                    <input type="text" class="form-control" id="searchGrupo5Vendedores" placeholder="Buscar Filtro"> 
+                                </div> 
+                                <br> 
+                                <div class="checklist" id="grupo5Vendedores"> 
+                                    {% for grupo5 in contadorLinea5 %} 
+                                    <div class="form-check"> 
+                                        <input class="form-check-input" type="checkbox" name="lineG5" 
+                                            value="{{grupo5.descripciongrupo5lineas}}"> 
+                                        <label class="form-check-label" for="flexCheckDefault">{{ grupo5.descripciongrupo5lineas }}   [{{ grupo5.Size }}]</label> 
+                                    </div> 
+                                    {% endfor %} 
+                                </div> 
+                            </div> 
+                        </div> 
+                    </div> 
+                    <div class="row"> 
+                        <div class="col-11"> 
+                            <div class="ocultar_grupo6" id="ocultar_grupo6"> 
+                                <h5>Grupo 6</h5> 
+                                <div class="input-group input-group-sm mb3 mt-a"> 
+                                    <input type="text" class="form-control" id="searchGrupo6Vendedores" placeholder="Buscar Filtro"> 
+                                </div> 
+                                <br> 
+                                <div class="checklist" id="grupo6Vendedores"> 
+                                    {% for grupo6 in contadorLinea6 %} 
+                                    <div class="form-check"> 
+                                        <input class="form-check-input" type="checkbox" name="lineG6" 
+                                            value="{{grupo6.descripciongrupo6lineas}}"> 
+                                        <label class="form-check-label" for="flexCheckDefault">{{ grupo6.descripciongrupo6lineas }}   [{{grupo6.Size}}]</label> 
+                                    </div> 
+                                    {% endfor %} 
+                                </div> 
+                            </div> 
+                        </div> 
+                    </div> 
+                    <br> 
+                    <button class="btn btn-primary text-center " type="submit" id="button-addon1">Buscar</button> 
+                    <button type="button" class="btn btn-secondary float-end" data-bs-dismiss="modal">Cerrar</button> 
+                </form> 
+            </div> 
+        </div> 
+    </div> 
+</div> 
+
+<script>
+    $(document).ready(function () {
+    $('#example').DataTable();
+});
+$(document).ready(function () {
+    $('#example1').DataTable();
+});
+$(document).ready(function () {
+    $('#example2').DataTable();
+});
+$(document).ready(function () {
+    $('#example3').DataTable();
+});
+$(document).ready(function () {
+    $('#example4').DataTable();
+});
+$(document).ready(function () {
+    $('#example5').DataTable();
+});
+$(document).ready(function () {
+    $('#example6').DataTable();
+});
+$(document).ready(function () {
+    $('#example6').DataTable();
+});
+$(document).ready(function () {
+    $('#example7').DataTable();
+});
+$(document).ready(function () {
+    $('#example8').DataTable();
+});
+$(document).ready(function () {
+    $('#example9').DataTable();
+});
+</script>
+
+<script> 
+    let readMore_btn = document.getElementById('item_btn') 
+    let hideText = document.getElementById('ocultar_item') 
+ 
+    let read_btn_vendedor = document.getElementById('ven_btn') 
+    let hideVendedores = document.getElementById('ocultar_vendedores') 
+ 
+    let read_btn_client = document.getElementById('client_btn') 
+    let hideClientes = document.getElementById('ocultar_clientes') 
+ 
+    let read_btn_group1 = document.getElementById('grupo1') 
+    let hideGrupo1 = document.getElementById('ocultar_grupo1') 
+ 
+    let read_btn_grupo2 = document.getElementById('grupo2') 
+    let hideGrupo2 = document.getElementById('ocultar_grupo2') 
+ 
+    let read_btn_grupo3 = document.getElementById('grupo3') 
+    let hideGrupo3 = document.getElementById('ocultar_grupo3') 
+ 
+    let read_btn_grupo4 = document.getElementById('grupo4') 
+    let hideGrupo4 = document.getElementById('ocultar_grupo4') 
+ 
+    let read_btn_grupo5 = document.getElementById('grupo5') 
+    let hideGrupo5 = document.getElementById('ocultar_grupo5') 
+ 
+    let read_btn_grupo6 = document.getElementById('grupo6') 
+    let hideGrupo6 = document.getElementById('ocultar_grupo6') 
+ 
+    let read_btn_group1_client = document.getElementById('grupo1client') 
+    let hideGrupo1client = document.getElementById('ocultar_grupo1_client') 
+ 
+    let read_btn_group2_client = document.getElementById('grupo2client') 
+    let hideGrupo2client = document.getElementById('ocultar_grupo2_client') 
+ 
+    let read_btn_group3_client = document.getElementById('grupo3client') 
+    let hideGrupo3client = document.getElementById('ocultar_grupo3_client') 
+ 
+    let read_btn_group4_client = document.getElementById('grupo4client') 
+    let hideGrupo4client = document.getElementById('ocultar_grupo4_client') 
+ 
+    function hideGroupsItems() { 
+        hideText.classList.toggle('mostrar_item') 
+        if (hideText.classList.contains('mostrar_item')) { 
+            item_btn.innerHTML = 'Ocultar Lineas' 
+        } else { 
+            item_btn.innerHTML = 'Listar Lineas' 
+        } 
+    } 
+ 
+    function hideGroupsVendedores(){ 
+        hideVendedores.classList.toggle('mostrar_vendedores') 
+        if(hideVendedores.classList.contains('mostrar_vendedores')){ 
+            ven_btn.innerHTML = 'Ocultar Vendedores' 
+        }else{ 
+            ven_btn.innerHTML = 'Listar Vendedores' 
+        } 
+    } 
+ 
+    function hideGroupClient(){ 
+        hideClientes.classList.toggle('mostrar_clientes') 
+        if(hideClientes.classList.contains('mostrar_clientes')){ 
+            client_btn.innerHTML = 'Ocultar Clientes' 
+        }else{ 
+            client_btn.innerHTML = 'Listar Clientes' 
+        } 
+    } 
+ 
+    function hideGruopOne() { 
+        hideGrupo1.classList.toggle('mostrar_grupo1') 
+        if (hideGrupo1.classList.contains('mostrar_grupo1')) { 
+            grupo1.innerHTML = 'Ocultar' 
+        } else { 
+            grupo1.innerHTML = "Linea" 
+        } 
+    } 
+ 
+    function hideGroupTwo(){ 
+        hideGrupo2.classList.toggle('mostrar_grupo2') 
+        if(hideGrupo2.classList.contains('mostrar_grupo2')){ 
+            grupo2.innerHTML = 'Ocultar' 
+        }else{ 
+            grupo2.innerHTML = 'Marca' 
+        } 
+    } 
+ 
+    function hideGroupThree(){ 
+        hideGrupo3.classList.toggle('mostrar_grupo3') 
+        if(hideGrupo3.classList.contains('mostrar_grupo3')){ 
+            grupo3.innerHTML = 'Ocultar' 
+        }else{ 
+            grupo3.innerHTML = 'Tipo' 
+        } 
+    } 
+ 
+    function hideGroupFour(){ 
+        hideGrupo4.classList.toggle('mostrar_grupo4') 
+        if(hideGrupo4.classList.contains('mostrar_grupo4')){ 
+            grupo4.innerHTML = 'Ocultar' 
+        }else{ 
+            grupo4.innerHTML = 'Modelo' 
+        } 
+    } 
+ 
+    function hideGroupFive(){ 
+        hideGrupo5.classList.toggle('mostrar_grupo5') 
+        if(hideGrupo5.classList.contains('mostrar_grupo5')){ 
+            grupo5.innerHTML = 'Ocultar' 
+        }else{ 
+            grupo5.innerHTML = 'Detalle' 
+        } 
+    } 
+ 
+    function hideGroupSix(){ 
+        hideGrupo6.classList.toggle('mostrar_grupo6') 
+        if(hideGrupo6.classList.contains('mostrar_grupo6')){ 
+            grupo6.innerHTML = 'Ocultar' 
+        }else{ 
+            grupo6.innerHTML = 'Grupo 6' 
+        } 
+    } 
+ 
+    function hideGroupOneClient(){ 
+        hideGrupo1client.classList.toggle('ocultar_grupo1_client') 
+        if(hideGrupo1client.classList.contains('mostrar_grupo1_client')){ 
+            grupo1client.innerHTML = 'Ocultar' 
+        }else{ 
+            grupo1client.innerHTML = 'Tipo' 
+        } 
+    } 
+ 
+    function hideGroupTwoClient(){ 
+        hideGrupo2client.classList.toggle('ocultar_grupo2_client') 
+        if(hideGrupo2client.classList.contains('mostrar_grupo2_client')){ 
+            grupo2client.innerHTML = 'Ocultar' 
+        }else{ 
+            grupo2client.innerHTML = 'Actividad' 
+        } 
+    } 
+ 
+    function hideGroupThreeClient(){ 
+        hideGrupo3client.classList.toggle('ocultar_grupo3_client') 
+        if(hideGrupo3client.classList.contains('mostrar_grupo3_client')){ 
+            grupo3client.innerHTML = 'Ocultar' 
+        }else{ 
+            grupo3client.innerHTML = 'Zona' 
+        } 
+    } 
+ 
+    function hideGroupFourClient(){ 
+        hideGrupo4client.classList.toggle('ocultar_grupo4_client') 
+        if(hideGrupo4client.classList.contains('mostrar_grupo4_client')){ 
+            grupo4client.innerHTML = 'Ocultar' 
+        }else{ 
+            grupo4client.innerHTML = 'Grupo4' 
+        } 
+    } 
+ 
+    readMore_btn.addEventListener('click', hideGroupsItems) 
+    read_btn_vendedor.addEventListener('click', hideGroupsVendedores) 
+    read_btn_client.addEventListener('click', hideGroupClient) 
+    read_btn_group1.addEventListener('click', hideGruopOne) 
+    read_btn_grupo2.addEventListener('click', hideGroupTwo) 
+    read_btn_grupo3.addEventListener('click', hideGroupThree) 
+    read_btn_grupo4.addEventListener('click', hideGroupFour) 
+    read_btn_grupo5.addEventListener('click', hideGroupFive) 
+    read_btn_grupo6.addEventListener('click', hideGroupSix) 
+    read_btn_group1_client.addEventListener('click', hideGroupOneClient) 
+    read_btn_group2_client.addEventListener('click', hideGroupTwoClient) 
+    read_btn_group3_client.addEventListener('click', hideGroupThreeClient) 
+    read_btn_group4_client.addEventListener('click', hideGroupFourClient) 
+     
+</script>
+ 
+{% endblock %}
