@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import dj_database_url
 from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -21,12 +22,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '_kuv7s@@o@5(-q()j8er*w^jvn$bv-1gkpio2@nzuhppk76$ve'
+SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = 'RENDER' not in os.environ
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost','192.168.1.3']
+ALLOWED_HOSTS = []
+
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
 # Application definition
@@ -50,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'dashboard.urls'
@@ -78,36 +84,20 @@ WSGI_APPLICATION = 'dashboard.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'main': {
-        'ENGINE': config("ENGINE"),
-        'NAME': config("MAIN_DB"),
-        'USER': config("USUARIO_DB"),
-        'PASSWORD': config("PASSWORD_DB"),
-        'HOST': config("SERVER_DB"),
-        'OPTIONS': {
-            'driver': "ODBC Driver 13 for SQL Server",
-        }
-    },
-    'empresa': {
-        'ENGINE': config("ENGINE"),
-        'NAME': config("EMPRESA_DB"),
-        'USER': config("USUARIO_DB"),
-        'PASSWORD': config("PASSWORD_DB"),
-        'HOST': config("SERVER_DB"),
-        'OPTIONS': {
-            'driver': "ODBC Driver 13 for SQL Server",
-        }
-    },
-      'default': {
-        'ENGINE': config("ENGINE"),
-        'NAME': config("EMPRESA_DB"),
-        'USER': config("USUARIO_DB"),
-        'PASSWORD': config("PASSWORD_DB"),
-        'HOST': config("SERVER_DB"),
-        'OPTIONS': {
-            'driver': "ODBC Driver 13 for SQL Server",
-        }
-    }
+    'default': dj_database_url.config(
+        default='mssql://USER:PASSWORD@HOST:PORT/NAME',
+        conn_max_age=600
+    ),
+     'main': dj_database_url.config(
+        default='mssql://USER:PASSWORD@HOST:PORT/NAME',
+        conn_max_age=600
+    ),
+     'empresa': dj_database_url.config(
+        default='mssql://USER:PASSWORD@HOST:PORT/NAME',
+        conn_max_age=600
+    )
+    
+
 }
 
 DATABASE_ROUTERS = ['dashboard.router.DatabaseAppsRouter']
@@ -153,5 +143,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
+# Following settings only make sense on production and may break development environments.
+if not DEBUG:    # Tell Django to copy statics to the `staticfiles` directory
+    # in your application directory on Render.
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    # Turn on WhiteNoise storage backend that takes care of compressing static files
+    # and creating unique names for each version so they can safely be cached forever.
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 LOGIN_URL = '/signin'
