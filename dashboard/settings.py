@@ -85,15 +85,15 @@ WSGI_APPLICATION = 'dashboard.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='mssql://USER:PASSWORD@HOST:PORT/NAME',
+        default='mssql://postgres:postgres@localhost/postgres',
         conn_max_age=600
     ),
      'main': dj_database_url.config(
-        default='mssql://USER:PASSWORD@HOST:PORT/NAME',
+        default='mssql://postgres:postgres@localhost/postgres',
         conn_max_age=600
     ),
      'empresa': dj_database_url.config(
-        default='mssql://USER:PASSWORD@HOST:PORT/NAME',
+        default='mssql://postgres:postgres@localhost/postgres',
         conn_max_age=600
     )
     
