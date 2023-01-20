@@ -8,37 +8,23 @@ from sii_seguridad.formularios.autenticacion_form import LoginForm
 
 
 def login(request):
-    message = None
-    if request.user.is_authenticated:
-        next = request.GET.get('next', '/')
-        return redirect(next)
-
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-
-        if user:
-            # limita la sesion segun la configuracion
-            #request.session.set_expiry(TIME_SESSION_AVAILABLE)
-            login_django(request, user)
-            datos_session = user.obtener_campos_session
-            request.session['grupo_id'] = datos_session.get('grupo_id').CodGrupo
-            request.session['usuario_id'] = datos_session.get('usuario_id')
-            request.session['usuario_nombre'] = datos_session.get('usuario_nombre')
-            return redirect('/dashboard')
-        else:
-            message = "Usuario o clave incorrectos!"
-            
-    form = LoginForm()
-
-    context = {
-        'form': form,
-        'message': message,
-        
-    }
-    return render(request, 'autenticacion/signin.html', context)
-
+    # Carga el form
+    if request.method == 'GET':
+        return render(request, 'signin.html', {
+            "form": AuthenticationForm
+        })
+    # Autentifica por POST
+    else:
+        user = authenticate(
+            request, username=request.POST['username'], password=request.POST
+            ['password'])
+        if user is None:
+            return render(request, 'signin.html', {
+                "form": AuthenticationForm, 
+                "error": "Username or password is incorrect."
+            })
+        login(request,user)
+        return redirect('/dashboard')
 
 @login_required
 def signout(request):
