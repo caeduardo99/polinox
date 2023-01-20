@@ -11,7 +11,7 @@ from sii_seguridad.formularios.autenticacion_form import LoginForm
 def login(request):
     # Carga el form
     if request.method == 'GET':
-        return render(request, 'signin.html', {
+        return render(request, 'autenticacion/signin.html', {
             "form": AuthenticationForm
         })
     # Autentifica por POST
