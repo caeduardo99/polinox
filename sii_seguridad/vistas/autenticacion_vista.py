@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.contrib.auth import login as login_django
 from django.contrib.auth import logout as logout_django
+from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 
 from sii_seguridad.formularios.autenticacion_form import LoginForm
 
